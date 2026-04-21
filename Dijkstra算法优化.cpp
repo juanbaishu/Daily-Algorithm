@@ -1,17 +1,18 @@
 ﻿// 使用 堆排序 进行优化，使用 链式前向星 代替 邻接矩阵										dijkstra算法，说白了就是不断辐射，优化前是找个最近点然后辐射，优化后是依次辐射
 #include <iostream>
+#include <cstring>
+#include <climits>
 #include <queue>
 #include <utility>
-#define inf 2e8
 using namespace std;
 
-int n, m;
+int n, m, s;	// 顶点、边、初始位置
 struct {
 	int to, nex, w;		// 出边节点、头插邻边索引、权值
-} e[10008];
-int h[10008];
-int dis[108];
-int vis[108];
+} e[200008];
+int h[100008];
+int dis[100008];
+int vis[100008];
 int cnt;
 typedef pair<int, int> PII;		// 用 pair 主要是为了 👇
 priority_queue<PII, vector<PII>, greater<> > q;		// 按 dis 小 -> 大 的顺序排列
@@ -27,7 +28,7 @@ void add(int x, int y, int wi) {
 }
 //		dijkstra优化写法，时间复杂度 O(nlogn)
 void dij(int s) {
-	for (int i = 1; i <= n; ++i) dis[i] = inf;
+	for (int i = 1; i <= n; ++i) dis[i] = INT_MAX;
 	dis[s] = 0;
 	PII p;
 	p.first = dis[s];	p.second = s;
@@ -84,7 +85,7 @@ void out() {
 }
 
 int main() {
-	cin >> n >> m;
+	cin >> n >> m >> s;
 	memset(h, -1, sizeof(h));
 	int x, y, wi;
 	for (int i = 1; i <= m; i++) {
@@ -92,8 +93,7 @@ int main() {
 		add(x, y, wi);	// 在 add() 中构建 e[] 链式前向星
 	}
 
-	// 默认从 索引1 开始
-	dij(1);
+	dij(s);
 
 	out();
 
