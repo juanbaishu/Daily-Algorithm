@@ -69,7 +69,7 @@ void add(int x, int y, int wi) {
 //}
 
 
-//					优化后的prim算法，使用堆优化，时间复杂度为 O(nlogn)
+//					优化后的prim算法，使用堆优化，时间复杂度为 O(mlogn)，因为堆logn，边的push操作最多m次，相当于遍历所有边
 typedef pair<int, int> PII;
 priority_queue<PII, vector<PII>, greater<> > q;		// 递增队列
 
@@ -90,7 +90,7 @@ int prim() {
 		vis[x] = 1;				// 将使用的点设定一下
 		sum += dis[x];
 		count++;
-		if (count == n) break;
+		if (count == n) break;		// 找够点后退出
 
 		for (int i = h[x]; i != -1; i = e[i].nex) {
 			int y = e[i].to;
