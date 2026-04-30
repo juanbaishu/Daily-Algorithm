@@ -21,6 +21,7 @@ int find(int x) {			// 递归找根节点
 	return fa[x] = find(fa[x]);		// 路径压缩，子节点都直接连到根节点
 }
 
+// 时间复杂度为 O(mlogm)，因为排序的时间复杂度是这个
 int kruskal() {
 	int sum = 0;
 	for (int i = 1; i <= n; ++i) fa[i] = i;		// 初始时，自身为自身组别
