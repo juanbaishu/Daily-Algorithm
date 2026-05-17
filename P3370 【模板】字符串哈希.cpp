@@ -1,53 +1,52 @@
 // 这里使用 自然进位hash/单进制hash  双进制hash 三种方法做
+
+
+
+//			自然溢出
 //#include <iostream>
-//#include <cmath>
-//#define MOD 13192833
+//#include <vector>
+//#include <algorithm>
+//#include <cstring>
+//#define ULL unsigned long long
+//#define b 131		// 进制
 //using namespace std;
 //int n;
-//int b = 97;		// 进制
-//string s;		// 记录当前字符串 各位的字符
-//int w[1508];	// 当前字符串各位的进制后的值
-//int h[10008];		// 记录各个字符串 hash值
-//int res[MOD];
+//vector<ULL> h;		// 字符串对应 hash值
 //
 //int main() {
 //	cin >> n;
-//	for (int i = 0; i < n; i++) {
-//		// 取出当前字符串
+//	while (n--) {
+//		string s;
 //		cin >> s;
-//		int l = s.size();
-//		for (int j = 0; j < l; ++j) {
-//			w[j] = (int)s[j];
+//
+//		ULL hash_val = 0;
+//		for (char x : s) {
+//			hash_val = hash_val * b + x;		// 自然溢出截断,这里相当于隐藏了一个MOD(2^64)
 //		}
-//		// 计算 hash值
-//		for (int j = 0; j < l; ++j) {
-//			h[i] = (h[i] * b + w[j]) % MOD;
-//		}
+//		h.push_back(hash_val);
 //	}
+//	sort(h.begin(), h.end());		// unique 是把相邻的重复元素放到末尾，所以时间复杂度为 O(n),需要sort排序
+//	int sum = unique(h.begin(), h.end()) - h.begin();		// 两个迭代器相减，得到的就是去重后有效元素的个数。
+//	cout << sum << endl;
 //
-//		// 遍历 h[] 找不重复的结果个数
-//		for (int i = 0; i < n; ++i) {
-//			res[h[i]]++;					// 将 所有hash值 -映射-> res表中，记录各个值的个数
-//		}
-//		int sum = 0;
-//		for (int i = 0; i < MOD; ++i) {
-//			if (res[i] != 0) sum++;
-//		}
-//		cout << sum << endl;
-//
-//		return 0;
-//	
+//	return 0;
 //}
 
+
+//			双hash值取法
 #include <iostream>
-#include <vector>
 #include <algorithm>
+#include <vector>
+#include <utility>
 #include <cstring>
-#define ULL unsigned long long
-#define b 131		// 进制
+#define MOD1 (int)(1e9 + 7)
+#define MOD2 (int)(1e9 + 9)
+#define b1   131
+#define b2   13331
+#define ll long long
 using namespace std;
 int n;
-vector<int> h;		// 字符串对应 hash值
+vector<pair<ll, ll> > v;
 
 int main() {
 	cin >> n;
@@ -55,14 +54,16 @@ int main() {
 		string s;
 		cin >> s;
 
-		ULL hash_val = 0;
+		ll t1 = 0, t2 = 0;
 		for (char x : s) {
-			hash_val = hash_val * b + x;		// 自然溢出截断，unsigned long long
+			t1 = ((t1 * b1) + x) % MOD1;
+			t2 = ((t2 * b2) + x) % MOD2;
 		}
-		h.push_back(hash_val);
+		v.push_back({ t1, t2 });
 	}
-	sort(h.begin(), h.end());		// unique 是把相邻的重复元素放到末尾，所以时间复杂度为 O(n),需要sort排序
-	int sum = unique(h.begin(), h.end()) - h.begin();		// 两个迭代器相减，得到的就是去重后有效元素的个数。
+
+	sort(v.begin(), v.end());
+	int sum = unique(v.begin(), v.end()) - v.begin();		// 迭代器差值为 不重复数个数
 	cout << sum << endl;
 
 	return 0;
